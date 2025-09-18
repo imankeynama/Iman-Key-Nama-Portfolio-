@@ -1,115 +1,262 @@
-import Image from "next/image";
-import { Geist, Geist_Mono } from "next/font/google";
+import client from '../lib/contentful';
+import type { GetStaticProps, InferGetStaticPropsType } from 'next';
+import type { Entry, Asset } from 'contentful';
+import Card from '../components/Card';
+import ContactForm from '../components/ContactForm';
+import Link from 'next/link';
+import React, { useState, useEffect } from 'react';
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+// Define the Contentful "skeleton" for an Article
+interface ArticleSkeleton {
+  contentTypeId: 'article';
+  fields: {
+    title: string;
+    slug: string;
+    excerpt?: string;
+    tags?: string[];
+  };
+}
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+// Define the Contentful "skeleton" for an Experience
+interface ExperienceSkeleton {
+  contentTypeId: 'experience';
+  fields: {
+    title: string;
+    slug: string;
+  };
+}
 
-export default function Home() {
+// Define the Contentful "skeleton" for a Project
+interface ProjectSkeleton {
+  contentTypeId: 'project';
+  fields: {
+    title: string;
+    slug: string;
+    thumbnail?: Asset; // For the project image
+    tags?: string[];
+  };
+}
+
+// We use the Entry type with our custom skeletons to correctly type the API response
+type IArticleEntry = Entry<ArticleSkeleton>;
+type IProjectEntry = Entry<ProjectSkeleton>;
+type IExperienceEntry = Entry<ExperienceSkeleton>;
+
+export const getStaticProps: GetStaticProps = async () => {
+  const articlesResponse = await client.getEntries<ArticleSkeleton>({
+    content_type: 'article',
+    select: ['sys.id', 'fields.title', 'fields.slug', 'fields.excerpt', 'fields.tags'],
+  });
+
+  const projectsResponse = await client.getEntries<ProjectSkeleton>({
+    content_type: 'project',
+    select: ['sys.id', 'fields.title', 'fields.slug', 'fields.thumbnail', 'fields.tags'],
+  });
+
+  const experiencesResponse = await client.getEntries<ExperienceSkeleton>({
+    content_type: 'experience',
+    select: ['sys.id', 'fields.title', 'fields.slug'],
+  });
+
+  return {
+    props: {
+      articles: articlesResponse.items as IArticleEntry[],
+      projects: projectsResponse.items as IProjectEntry[],
+      experiences: experiencesResponse.items as IExperienceEntry[],
+    },
+    revalidate: 60,
+  };
+};
+
+// This correctly infers the type of the props from getStaticProps
+type Props = InferGetStaticPropsType<typeof getStaticProps>;
+
+// We now explicitly type the 'articles' and 'projects' parameters
+export default function Home({ articles, projects, experiences }: Props) {
+  // State for Articles
+  const [articleSearch, setArticleSearch] = useState('');
+  const [articleSort, setArticleSort] = useState<'asc' | 'desc'>('asc');
+  const [filteredArticles, setFilteredArticles] = useState(articles);
+
+  // State for Gallery (Projects)
+  const [projectSearch, setProjectSearch] = useState('');
+  const [projectSort, setProjectSort] = useState<'asc' | 'desc'>('asc');
+  const [filteredProjects, setFilteredProjects] = useState(projects);
+
+  // Effect for Articles
+  useEffect(() => {
+    let tempArticles = [...articles];
+
+    // Filter by search term (tags)
+    if (articleSearch) {
+      tempArticles = tempArticles.filter(article =>
+        article.fields.tags?.some(tag =>
+          tag.toLowerCase().includes(articleSearch.toLowerCase())
+        )
+      );
+    }
+
+    // Sort
+    tempArticles.sort((a, b) => {
+      return articleSort === 'asc'
+        ? a.fields.title.localeCompare(b.fields.title)
+        : b.fields.title.localeCompare(a.fields.title);
+    });
+
+    setFilteredArticles(tempArticles);
+  }, [articles, articleSearch, articleSort]);
+
+  // Effect for Projects
+  useEffect(() => {
+    let tempProjects = [...projects];
+
+    if (projectSearch) {
+      tempProjects = tempProjects.filter(project =>
+        project.fields.tags?.some(tag =>
+          tag.toLowerCase().includes(projectSearch.toLowerCase())
+        )
+      );
+    }
+
+    tempProjects.sort((a, b) => projectSort === 'asc' ? a.fields.title.localeCompare(b.fields.title) : b.fields.title.localeCompare(a.fields.title));
+    setFilteredProjects(tempProjects);
+  }, [projects, projectSearch, projectSort]);
   return (
-    <div
-      className={`${geistSans.className} ${geistMono.className} font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20`}
-    >
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              pages/index.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+    <div className="container mx-auto px-4 py-8">
+      <section className="text-left my-12">
+        <h1 className="text-4xl font-bold text-slate-900 mb-4 md:text-5xl">
+          Iman Key Nama
+        </h1>
+        <p className="text-lg italic text-slate-600 max-w-2xl">
+          Project Manager and Product Developer with a passion for creating innovative solutions in multimedia and intelligent systems.
+        </p>
+      </section>
+
+      <section className="mb-16">
+        <h2 className="text-3xl font-bold text-slate-800 mb-6 border-b pb-2">
+          Work Experience
+        </h2>
+        {experiences.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {experiences.map((experience) => (
+              <Card
+                key={experience.sys.id}
+                // This will link to a future experience details page
+                href={`/experience/${experience.fields.slug}`}
+                title={experience.fields.title}
+              />
+            ))}
+          </div>
+        ) : (
+          <p className="text-slate-500">No experiences found.</p>
+        )}
+      </section>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 md:gap-16">
+        <section className="mb-16 md:mb-0">
+          <h2 className="text-3xl font-bold text-slate-800 mb-6 border-b pb-2">
+            Articles
+          </h2>
+          <div className="flex justify-between items-center mb-4">
+            <input
+              type="text"
+              placeholder="Search by tag..."
+              className="px-3 py-1 border border-slate-300 rounded-md text-sm focus:ring-blue-500 focus:border-blue-500"
+              value={articleSearch}
+              onChange={(e) => setArticleSearch(e.target.value)}
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setArticleSort('asc')}
+                className={`px-3 py-1 text-sm rounded-md transition-colors ${articleSort === 'asc' ? 'bg-slate-800 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'}`}
+              >
+                Asc
+              </button>
+              <button
+                onClick={() => setArticleSort('desc')}
+                className={`px-3 py-1 text-sm rounded-md transition-colors ${articleSort === 'desc' ? 'bg-slate-800 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'}`}
+              >
+                Desc
+              </button>
+            </div>
+          </div>
+          {filteredArticles.length > 0 ? (
+            <div className="h-96 overflow-y-auto border border-slate-200 rounded-lg bg-white shadow-sm">
+              <ul>
+                {filteredArticles.map((article, index) => (
+                  <li key={article.sys.id}>
+                    <Link
+                      href={`/articles/${article.fields.slug}`}
+                      className={`block px-4 py-2 transition-colors duration-200 hover:bg-slate-50 ${index !== articles.length - 1 ? 'border-b border-slate-200' : ''
+                        }`}
+                    >
+                      <h3 className="text-sm font-medium text-slate-800">{article.fields.title}</h3>
+                      {article.fields.excerpt && (
+                        <p className="text-sm italic text-slate-600 mt-1">{article.fields.excerpt}</p>
+                      )}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <p className="text-slate-500 text-center py-16">No articles found.</p>
+          )}
+        </section>
+
+        <section>
+          <h2 className="text-3xl font-bold text-slate-800 mb-6 border-b pb-2">
+            Gallery
+          </h2>
+          <div className="flex justify-between items-center mb-4">
+            <input
+              type="text"
+              placeholder="Search by tag..."
+              className="px-3 py-1 border border-slate-300 rounded-md text-sm focus:ring-blue-500 focus:border-blue-500"
+              value={projectSearch}
+              onChange={(e) => setProjectSearch(e.target.value)}
+            />
+            <div className="flex gap-2">
+              <button
+                onClick={() => setProjectSort('asc')}
+                className={`px-3 py-1 text-sm rounded-md transition-colors ${projectSort === 'asc' ? 'bg-slate-800 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'}`}
+              >
+                Asc
+              </button>
+              <button
+                onClick={() => setProjectSort('desc')}
+                className={`px-3 py-1 text-sm rounded-md transition-colors ${projectSort === 'desc' ? 'bg-slate-800 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'}`}
+              >
+                Desc
+              </button>
+            </div>
+          </div>
+          {filteredProjects.length > 0 ? (
+            <div className="h-96 overflow-y-auto border border-slate-200 rounded-lg bg-white shadow-sm p-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {filteredProjects.map((project) => (
+                  <Card
+                    key={project.sys.id}
+                    href={`/projects/${project.fields.slug}`}
+                    title={project.fields.title}
+                    imageUrl={
+                      project.fields.thumbnail?.fields?.file?.url
+                        ? `https:${project.fields.thumbnail.fields.file.url}`
+                        : undefined
+                    }
+                  />
+                ))}
+              </div>
+            </div>
+          ) : (
+            <p className="text-slate-500 text-center py-16">No projects found.</p>
+          )}
+        </section>
+      </div>
+
+      <section className="mt-24">
+        <ContactForm />
+      </section>
     </div>
   );
 }
