@@ -1,106 +1,102 @@
-2:19:53 AM: build-image version: 82641f3cd91d26dfb76016a98afb1d48c45185fc (noble)
-2:19:53 AM: buildbot version: 82641f3cd91d26dfb76016a98afb1d48c45185fc
-2:19:53 AM: Building without cache
-2:19:53 AM: Starting to prepare the repo for build
-2:19:53 AM: No cached dependencies found. Cloning fresh repo
-2:19:53 AM: git clone --filter=blob:none https://github.com/imankeynama/Iman-Key-Nama-Portfolio-
-2:19:53 AM: Preparing Git Reference refs/heads/main
-2:19:55 AM: Starting to install dependencies
-2:19:56 AM: v22.19.0 is already installed.
-2:19:56 AM: Now using node v22.19.0 (npm v10.9.3)
-2:19:56 AM: Enabling Node.js Corepack
-2:19:56 AM: Started restoring cached build plugins
-2:19:56 AM: Finished restoring cached build plugins
-2:19:56 AM: Started restoring cached corepack dependencies
-2:19:56 AM: Finished restoring cached corepack dependencies
-2:19:56 AM: No npm workspaces detected
-2:19:56 AM: Started restoring cached node modules
-2:19:56 AM: Finished restoring cached node modules
-2:19:56 AM: Installing npm packages using npm version 10.9.3
-2:20:09 AM: added 471 packages in 13s
-2:20:09 AM: npm packages installed
-2:20:09 AM: Successfully installed dependencies
-2:20:09 AM: Starting build script
-2:20:10 AM: Detected 1 framework(s)
-2:20:10 AM: "next" at version "15.5.3"
-2:20:10 AM: Section completed: initializing
-2:20:12 AM: ​
-2:20:12 AM: Netlify Build                                                 
-2:20:12 AM: ────────────────────────────────────────────────────────────────
-2:20:12 AM: ​
-2:20:12 AM: ❯ Version
-2:20:12 AM:   @netlify/build 35.1.6
-2:20:12 AM: ​
-2:20:12 AM: ❯ Flags
-2:20:12 AM:   accountId: 681d20fff162b66c25ac4e4d
-2:20:12 AM:   baseRelDir: true
-2:20:12 AM:   buildId: 68cca1a7ead26b0ff620b384
-2:20:12 AM:   deployId: 68cca1a7ead26b0ff620b386
-2:20:12 AM: ​
-2:20:12 AM: ❯ Current directory
-2:20:12 AM:   /opt/build/repo
-2:20:12 AM: ​
-2:20:12 AM: ❯ Config file
-2:20:12 AM:   /opt/build/repo/netlify.toml
-2:20:12 AM: ​
-2:20:12 AM: ❯ Context
-2:20:12 AM:   production
-2:20:13 AM: ​
-2:20:13 AM: ❯ Using Next.js Runtime - v5.13.3
-2:20:14 AM: No Next.js cache to restore
-2:20:14 AM: ​
-2:20:14 AM: build.command from netlify.toml                               
-2:20:14 AM: ────────────────────────────────────────────────────────────────
-2:20:14 AM: ​
-2:20:14 AM: $ npm run build
-2:20:14 AM: > iman_key_nama_portfolio@0.1.0 build
-2:20:14 AM: > next build --turbopack
-2:20:15 AM: ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
-2:20:15 AM:    ▲ Next.js 15.5.3 (Turbopack)
-2:20:15 AM:    Linting and checking validity of types ...
-2:20:18 AM: 
-2:20:18 AM: Failed to compile.
-2:20:18 AM: ./pages/articles/[slug].tsx
-2:20:18 AM: 85:11  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
-2:20:18 AM: 111:11  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
-2:20:18 AM: ./pages/contact.tsx
-2:20:18 AM: 34:25  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-2:20:18 AM: ./pages/experience/[slug].tsx
-2:20:18 AM: 69:20  Warning: 'featuredImage' is assigned a value but never used.  @typescript-eslint/no-unused-vars
-2:20:18 AM: 80:21  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
-2:20:18 AM: ./pages/projects/[slug].tsx
-2:20:18 AM: 69:20  Warning: 'featuredImage' is assigned a value but never used.  @typescript-eslint/no-unused-vars
-2:20:18 AM: 80:21  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
-2:20:18 AM: ./components/Card.tsx
-2:20:18 AM: 18:21  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
-2:20:18 AM: info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
-2:20:18 AM: ​
-2:20:18 AM: "build.command" failed                                        
-2:20:18 AM: ────────────────────────────────────────────────────────────────
-2:20:18 AM: ​
-2:20:18 AM:   Error message
-2:20:18 AM:   Command failed with exit code 1: npm run build (https://ntl.fyi/exit-code-1)
-2:20:18 AM: ​
-2:20:18 AM:   Error location
-2:20:18 AM:   In build.command from netlify.toml:
-2:20:18 AM:   npm run build
-2:20:18 AM: ​
-2:20:18 AM:   Resolved config
-2:20:18 AM:   build:
-2:20:18 AM:     command: npm run build
-2:20:18 AM:     commandOrigin: config
-2:20:18 AM:     environment:
-2:20:18 AM:       - CONTACT_FORM_TO_EMAIL
-2:20:18 AM:       - CONTENTFUL_ACCESS_TOKEN
-2:20:18 AM:       - CONTENTFUL_SPACE_ID
-2:20:18 AM:       - RESEND_API_KEY
-2:20:18 AM:     publish: /opt/build/repo/.next
-2:20:18 AM:     publishOrigin: config
-2:20:18 AM:   plugins:
-2:20:18 AM:     - inputs: {}
-2:20:18 AM:       origin: config
-2:20:18 AM:       package: "@netlify/plugin-nextjs"
-2:20:18 AM: Build failed due to a user error: Build script returned non-zero exit code: 2
-2:20:19 AM: Failed during stage 'building site': Build script returned non-zero exit code: 2 (https://ntl.fyi/exit-code-2)
-2:20:19 AM: Failing build: Failed to build site
-2:20:19 AM: Finished processing build request in 26.097s
+2:29:29 AM: Waiting for other deploys from your team to complete. Check the queue: https://app.netlify.com/teams/imankeynama/builds
+2:30:04 AM: build-image version: 82641f3cd91d26dfb76016a98afb1d48c45185fc (noble)
+2:30:04 AM: buildbot version: 82641f3cd91d26dfb76016a98afb1d48c45185fc
+2:30:04 AM: Building without cache
+2:30:04 AM: Starting to prepare the repo for build
+2:30:04 AM: No cached dependencies found. Cloning fresh repo
+2:30:04 AM: git clone --filter=blob:none https://github.com/imankeynama/Iman-Key-Nama-Portfolio-
+2:30:04 AM: Preparing Git Reference refs/heads/main
+2:30:06 AM: Starting to install dependencies
+2:30:07 AM: v22.19.0 is already installed.
+2:30:07 AM: Now using node v22.19.0 (npm v10.9.3)
+2:30:07 AM: Enabling Node.js Corepack
+2:30:07 AM: Started restoring cached build plugins
+2:30:07 AM: Finished restoring cached build plugins
+2:30:07 AM: Started restoring cached corepack dependencies
+2:30:07 AM: Finished restoring cached corepack dependencies
+2:30:07 AM: No npm workspaces detected
+2:30:07 AM: Started restoring cached node modules
+2:30:07 AM: Finished restoring cached node modules
+2:30:07 AM: Installing npm packages using npm version 10.9.3
+2:30:16 AM: added 471 packages in 9s
+2:30:16 AM: npm packages installed
+2:30:16 AM: Successfully installed dependencies
+2:30:16 AM: Starting build script
+2:30:17 AM: Detected 1 framework(s)
+2:30:17 AM: "next" at version "15.5.3"
+2:30:17 AM: Section completed: initializing
+2:30:18 AM: ​
+2:30:18 AM: Netlify Build                                                 
+2:30:18 AM: ────────────────────────────────────────────────────────────────
+2:30:18 AM: ​
+2:30:18 AM: ❯ Version
+2:30:18 AM:   @netlify/build 35.1.6
+2:30:18 AM: ​
+2:30:18 AM: ❯ Flags
+2:30:18 AM:   accountId: 681d20fff162b66c25ac4e4d
+2:30:18 AM:   baseRelDir: true
+2:30:18 AM:   buildId: 68cca3e9a84c5000999febc1
+2:30:18 AM:   deployId: 68cca3e9a84c5000999febc3
+2:30:18 AM: ​
+2:30:18 AM: ❯ Current directory
+2:30:18 AM:   /opt/build/repo
+2:30:18 AM: ​
+2:30:18 AM: ❯ Config file
+2:30:18 AM:   /opt/build/repo/netlify.toml
+2:30:18 AM: ​
+2:30:18 AM: ❯ Context
+2:30:18 AM:   production
+2:30:19 AM: ​
+2:30:19 AM: ❯ Using Next.js Runtime - v5.13.3
+2:30:20 AM: No Next.js cache to restore
+2:30:20 AM: ​
+2:30:20 AM: build.command from netlify.toml                               
+2:30:20 AM: ────────────────────────────────────────────────────────────────
+2:30:20 AM: ​
+2:30:20 AM: $ npm run build
+2:30:20 AM: > iman_key_nama_portfolio@0.1.0 build
+2:30:20 AM: > next build --turbopack
+2:30:20 AM: ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
+2:30:20 AM:    ▲ Next.js 15.5.3 (Turbopack)
+2:30:20 AM:    Linting and checking validity of types ...
+2:30:22 AM: 
+2:30:22 AM: Failed to compile.
+2:30:22 AM: ./pages/articles/[slug].tsx
+2:30:22 AM: 86:11  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+2:30:22 AM: ./pages/contact.tsx
+2:30:22 AM: 34:25  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+2:30:22 AM: ./pages/experience/[slug].tsx
+2:30:22 AM: 81:21  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+2:30:22 AM: ./pages/projects/[slug].tsx
+2:30:22 AM: 81:21  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+2:30:22 AM: info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+2:30:23 AM: Failed during stage 'building site': Build script returned non-zero exit code: 2 (https://ntl.fyi/exit-code-2)
+2:30:23 AM: ​
+2:30:23 AM: "build.command" failed                                        
+2:30:23 AM: ────────────────────────────────────────────────────────────────
+2:30:23 AM: ​
+2:30:23 AM:   Error message
+2:30:23 AM:   Command failed with exit code 1: npm run build (https://ntl.fyi/exit-code-1)
+2:30:23 AM: ​
+2:30:23 AM:   Error location
+2:30:23 AM:   In build.command from netlify.toml:
+2:30:23 AM:   npm run build
+2:30:23 AM: ​
+2:30:23 AM:   Resolved config
+2:30:23 AM:   build:
+2:30:23 AM:     command: npm run build
+2:30:23 AM:     commandOrigin: config
+2:30:23 AM:     environment:
+2:30:23 AM:       - CONTACT_FORM_TO_EMAIL
+2:30:23 AM:       - CONTENTFUL_ACCESS_TOKEN
+2:30:23 AM:       - CONTENTFUL_SPACE_ID
+2:30:23 AM:       - RESEND_API_KEY
+2:30:23 AM:     publish: /opt/build/repo/.next
+2:30:23 AM:     publishOrigin: config
+2:30:23 AM:   plugins:
+2:30:23 AM:     - inputs: {}
+2:30:23 AM:       origin: config
+2:30:23 AM:       package: "@netlify/plugin-nextjs"
+2:30:23 AM: Build failed due to a user error: Build script returned non-zero exit code: 2
+2:30:23 AM: Failing build: Failed to build site
+2:30:23 AM: Finished processing build request in 19.435s

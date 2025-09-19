@@ -83,10 +83,13 @@ export default function ArticlePage({ article }: ArticlePageProps) {
         const { url } = node.data.target.fields.file;
         const { title } = node.data.target.fields;
         return (
-          <img
+          <Image
             src={`https:${url}`}
             alt={title}
             className="my-6 rounded-lg shadow-md w-full"
+            width={node.data.target.fields.file.details.image.width}
+            height={node.data.target.fields.file.details.image.height}
+            sizes="(max-width: 768px) 100vw, 800px"
           />
         );
       },
