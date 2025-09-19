@@ -3,8 +3,7 @@ import type { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import { BLOCKS } from '@contentful/rich-text-types';
-import type { Document } from '@contentful/rich-text-types';
-import type { Entry, Asset, EntryFieldTypes } from 'contentful';
+import type { Entry, EntryFieldTypes } from 'contentful';
 
 // Define the shape of your Contentful content type
 interface ArticleSkeleton {

@@ -1,6 +1,6 @@
 import client from '../lib/contentful';
 import type { GetStaticProps, InferGetStaticPropsType } from 'next';
-import type { Entry, Asset, EntryFieldTypes, EntrySkeletonType } from 'contentful';
+import type { EntryFieldTypes, EntrySkeletonType } from 'contentful';
 import Card from '../components/Card';
 import ContactForm from '../components/ContactForm';
 import Link from 'next/link';

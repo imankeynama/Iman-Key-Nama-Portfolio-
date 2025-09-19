@@ -1,28 +1,29 @@
 import client from '../../lib/contentful';
 import type { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
-import type { Entry } from 'contentful';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import { BLOCKS } from '@contentful/rich-text-types';
-import type { Document } from '@contentful/rich-text-types';
+import type { Entry, EntryFieldTypes } from 'contentful';
 
-// Define the skeleton for an Experience entry with a body
-interface IExperienceEntry extends Entry {
+// Define the shape of your Contentful content type
+interface ExperienceSkeleton {
+    contentTypeId: 'experience';
     fields: {
-        title: string;
-        slug: string;
-        body: Document; // The rich text field for details
+        title: EntryFieldTypes.Text;
+        slug: EntryFieldTypes.Text;
+        body: EntryFieldTypes.RichText;
+        featuredImage?: EntryFieldTypes.AssetLink;
     };
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-    const experienceResponse = await client.getEntries({
+    const experiencesResponse = await client.getEntries<ExperienceSkeleton>({
         content_type: 'experience',
         select: ['fields.slug'],
     });
 
-    const paths = experienceResponse.items.map((item: any) => ({
-        params: { slug: item.fields.slug },
+    const paths = experiencesResponse.items.map((experience) => ({
+        params: { slug: experience.fields.slug },
     }));
 
     return {
@@ -31,8 +32,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
     };
 };
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-    const experienceResponse = await client.getEntries({
+export const getStaticProps: GetStaticProps = async ({ params = {} }) => {
+    const experienceResponse = await client.withoutUnresolvableLinks.getEntries<ExperienceSkeleton>({
         content_type: 'experience',
         'fields.slug': params.slug as string,
         limit: 1,
@@ -48,14 +49,14 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
     return {
         props: {
-            experience: experience as IExperienceEntry,
+            experience,
         },
         revalidate: 60,
     };
 };
 
 interface ExperiencePageProps {
-    experience: IExperienceEntry;
+    experience: Entry<ExperienceSkeleton, 'WITHOUT_UNRESOLVABLE_LINKS'>;
 }
 
 export default function ExperiencePage({ experience }: ExperiencePageProps) {
@@ -65,25 +66,34 @@ export default function ExperiencePage({ experience }: ExperiencePageProps) {
         return <div>Loading...</div>;
     }
 
+    const { title, featuredImage, body } = experience.fields;
+
     const renderOptions = {
         renderNode: {
-            [BLOCKS.EMBEDDED_ASSET]: (node: any) => {
-                if (!node.data?.target?.fields?.file) {
+            [BLOCKS.EMBEDDED_ASSET]: (node) => {
+                if (!node.data?.target?.fields?.file?.url) {
                     return null;
                 }
-                const { file } = node.data.target.fields;
+                const { url } = node.data.target.fields.file;
+                const { title: imgTitle } = node.data.target.fields;
                 return (
-                    <img src={`https:${file.url}`} alt={file.fileName} className="my-4 max-w-full h-auto rounded-lg" />
+                    <img
+                        src={`https:${url}`}
+                        alt={imgTitle}
+                        className="my-6 rounded-lg shadow-md w-full"
+                    />
                 );
             },
         },
     };
 
     return (
-        <main className="py-12">
-            <article className="prose lg:prose-xl mx-auto">
-                <h1 className="text-slate-900">{experience.fields.title}</h1>
-                <div className="text-slate-700">{documentToReactComponents(experience.fields.body, renderOptions)}</div>
+        <main className="container mx-auto px-4 py-12">
+            <article className="max-w-3xl mx-auto text-center">
+                <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4">{title}</h1>
+                <div className="prose lg:prose-xl text-slate-700">
+                    {documentToReactComponents(body, renderOptions)}
+                </div>
             </article>
         </main>
     );

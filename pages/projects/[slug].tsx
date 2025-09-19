@@ -1,27 +1,28 @@
 import client from '../../lib/contentful';
 import type { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
-import type { Entry } from 'contentful';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import { BLOCKS } from '@contentful/rich-text-types';
-import type { Document } from '@contentful/rich-text-types';
+import type { Entry, EntryFieldTypes } from 'contentful';
 
-// This is a more flexible type for the entry
-interface IProjectEntry extends Entry {
+// Define the shape of your Contentful content type
+interface ProjectSkeleton {
+    contentTypeId: 'project';
     fields: {
-        title: string;
-        slug: string;
-        description: Document; // Note: This field is now 'description'
-        gallery?: any;
+        title: EntryFieldTypes.Text;
+        slug: EntryFieldTypes.Text;
+        body: EntryFieldTypes.RichText;
+        featuredImage?: EntryFieldTypes.AssetLink;
     };
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-    const projectsResponse = await client.getEntries({
-        content_type: 'project', // Note: content type is now 'project'
+    const projectsResponse = await client.getEntries<ProjectSkeleton>({
+        content_type: 'project',
+        select: ['fields.slug'],
     });
 
-    const paths = projectsResponse.items.map((project: any) => ({
+    const paths = projectsResponse.items.map((project) => ({
         params: { slug: project.fields.slug },
     }));
 
@@ -31,10 +32,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
     };
 };
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-    const projectResponse = await client.getEntries({
-        content_type: 'project', // Note: content type is now 'project'
+export const getStaticProps: GetStaticProps = async ({ params = {} }) => {
+    const projectResponse = await client.withoutUnresolvableLinks.getEntries<ProjectSkeleton>({
+        content_type: 'project',
         'fields.slug': params.slug as string,
+        limit: 1,
     });
 
     const project = projectResponse.items[0];
@@ -47,18 +49,16 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
     return {
         props: {
-            project: project as IProjectEntry,
+            project,
         },
         revalidate: 60,
     };
 };
 
-// This correctly types the props passed to the component
 interface ProjectPageProps {
-    project: IProjectEntry;
+    project: Entry<ProjectSkeleton, 'WITHOUT_UNRESOLVABLE_LINKS'>;
 }
 
-// This is the component that will render your project
 export default function ProjectPage({ project }: ProjectPageProps) {
     const router = useRouter();
 
@@ -66,19 +66,21 @@ export default function ProjectPage({ project }: ProjectPageProps) {
         return <div>Loading...</div>;
     }
 
-    // Custom renderer for rich text images
+    const { title, featuredImage, body } = project.fields;
+
     const renderOptions = {
         renderNode: {
-            [BLOCKS.EMBEDDED_ASSET]: (node: any) => {
+            [BLOCKS.EMBEDDED_ASSET]: (node) => {
                 if (!node.data?.target?.fields?.file?.url) {
                     return null;
                 }
-                const { file, title } = node.data.target.fields;
+                const { url } = node.data.target.fields.file;
+                const { title: imgTitle } = node.data.target.fields;
                 return (
                     <img
-                        src={`https:${file.url}`}
-                        alt={title}
-                        className="my-8 rounded-lg shadow-lg w-full md:w-3/4 mx-auto" // Control size and spacing
+                        src={`https:${url}`}
+                        alt={imgTitle}
+                        className="my-6 rounded-lg shadow-md w-full"
                     />
                 );
             },
@@ -86,10 +88,12 @@ export default function ProjectPage({ project }: ProjectPageProps) {
     };
 
     return (
-        <main className="py-12">
-            <article className="prose lg:prose-xl mx-auto">
-                <h1 className="text-slate-900">{project.fields.title}</h1>
-                <div className="text-slate-700">{documentToReactComponents(project.fields.description, renderOptions)}</div>
+        <main className="container mx-auto px-4 py-12">
+            <article className="max-w-3xl mx-auto text-center">
+                <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4">{title}</h1>
+                <div className="prose lg:prose-xl text-slate-700">
+                    {documentToReactComponents(body, renderOptions)}
+                </div>
             </article>
         </main>
     );
