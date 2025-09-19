@@ -1,6 +1,7 @@
 import client from '../../lib/contentful';
 import type { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import { BLOCKS } from '@contentful/rich-text-types';
 import type { Entry, EntryFieldTypes } from 'contentful';
@@ -108,10 +109,12 @@ export default function ArticlePage({ article }: ArticlePageProps) {
         )}
 
         {featuredImage?.fields?.file?.url && (
-          <img
+          <Image
             src={`https:${featuredImage.fields.file.url}`}
             alt={title}
             className="w-full md:w-1/2 mx-auto h-auto rounded-xl shadow-lg mb-8"
+            width={featuredImage.fields.file.details.image.width}
+            height={featuredImage.fields.file.details.image.height}
           />
         )}
 

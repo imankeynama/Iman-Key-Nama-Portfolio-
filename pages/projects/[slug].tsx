@@ -1,6 +1,7 @@
 import client from '../../lib/contentful';
 import type { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import { BLOCKS } from '@contentful/rich-text-types';
 import type { Entry, EntryFieldTypes } from 'contentful';
@@ -90,7 +91,18 @@ export default function ProjectPage({ project }: ProjectPageProps) {
     return (
         <main className="container mx-auto px-4 py-12">
             <article className="max-w-3xl mx-auto text-center">
-                <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4">{title}</h1>
+                <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4">
+                    {title}
+                </h1>
+                {featuredImage?.fields?.file?.url && (
+                    <Image
+                        src={`https:${featuredImage.fields.file.url}`}
+                        alt={title}
+                        className="w-full md:w-1/2 mx-auto h-auto rounded-xl shadow-lg mb-8"
+                        width={featuredImage.fields.file.details.image.width}
+                        height={featuredImage.fields.file.details.image.height}
+                    />
+                )}
                 <div className="prose lg:prose-xl text-slate-700">
                     {documentToReactComponents(body, renderOptions)}
                 </div>
