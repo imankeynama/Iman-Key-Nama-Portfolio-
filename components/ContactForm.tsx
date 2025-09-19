@@ -31,9 +31,13 @@ export default function ContactForm() {
             } else {
                 throw new Error(data.message || 'Something went wrong.');
             }
-        } catch (error: any) {
+        } catch (error: unknown) {
             setStatus('error');
-            setFeedbackMessage(error.message);
+            if (error instanceof Error) {
+                setFeedbackMessage(error.message);
+            } else {
+                setFeedbackMessage('An unknown error occurred.');
+            }
         }
     };
 

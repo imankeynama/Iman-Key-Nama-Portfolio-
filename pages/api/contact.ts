@@ -34,7 +34,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
 
         res.status(200).json({ message: 'Message sent successfully!' });
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error('Contact API error:', error);
         res.status(500).json({ message: 'Something went wrong.' });
     }

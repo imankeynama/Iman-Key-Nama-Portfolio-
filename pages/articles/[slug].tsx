@@ -4,25 +4,27 @@ import { useRouter } from 'next/router';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import { BLOCKS } from '@contentful/rich-text-types';
 import type { Document } from '@contentful/rich-text-types';
-import type { Entry, Asset } from 'contentful';
+import type { Entry, Asset, EntryFieldTypes } from 'contentful';
 
-// This is a more flexible type for the entry
-interface IArticleEntry extends Entry {
+// Define the shape of your Contentful content type
+interface ArticleSkeleton {
+  contentTypeId: 'article';
   fields: {
-    title: string;
-    slug: string;
-    body: Document;
-    featuredImage?: Asset;
-    tags?: string[];
+    title: EntryFieldTypes.Text;
+    slug: EntryFieldTypes.Text;
+    body: EntryFieldTypes.RichText;
+    featuredImage?: EntryFieldTypes.AssetLink;
+    tags?: EntryFieldTypes.Array<EntryFieldTypes.Symbol>;
   };
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const articlesResponse = await client.getEntries({
+  const articlesResponse = await client.getEntries<ArticleSkeleton>({
     content_type: 'article',
+    select: ['fields.slug'],
   });
 
-  const paths = articlesResponse.items.map((article: any) => ({
+  const paths = articlesResponse.items.map((article) => ({
     params: { slug: article.fields.slug },
   }));
 
@@ -32,9 +34,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getStaticProps: GetStaticProps = async ({ params = {} }) => {
   // Use the client chain modifier to ensure links are resolved
-  const articleResponse = await client.withoutUnresolvableLinks.getEntries({
+  const articleResponse = await client.withoutUnresolvableLinks.getEntries<ArticleSkeleton>({
     content_type: 'article',
     'fields.slug': params.slug as string,
     limit: 1,
@@ -58,7 +60,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
 // This correctly types the props passed to the component
 interface ArticlePageProps {
-  article: IArticleEntry;
+  article: Entry<ArticleSkeleton, 'WITHOUT_UNRESOLVABLE_LINKS'>;
 }
 
 // This is the component that will render your article
@@ -74,7 +76,7 @@ export default function ArticlePage({ article }: ArticlePageProps) {
   // Custom renderer for rich text images
   const renderOptions = {
     renderNode: {
-      [BLOCKS.EMBEDDED_ASSET]: (node: any) => {
+      [BLOCKS.EMBEDDED_ASSET]: (node) => {
         if (!node.data?.target?.fields?.file?.url) {
           return null;
         }

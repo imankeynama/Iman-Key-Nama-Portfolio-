@@ -1,0 +1,119 @@
+1:43:53 AM: build-image version: 82641f3cd91d26dfb76016a98afb1d48c45185fc (noble)
+1:43:53 AM: buildbot version: 82641f3cd91d26dfb76016a98afb1d48c45185fc
+1:43:53 AM: Fetching cached dependencies
+1:43:53 AM: Failed to fetch cache, continuing with build
+1:43:53 AM: Starting to prepare the repo for build
+1:43:54 AM: No cached dependencies found. Cloning fresh repo
+1:43:54 AM: git clone --filter=blob:none https://github.com/imankeynama/Iman-Key-Nama-Portfolio-
+1:43:54 AM: Preparing Git Reference refs/heads/main
+1:43:55 AM: Starting to install dependencies
+1:43:57 AM: v22.19.0 is already installed.
+1:43:57 AM: Now using node v22.19.0 (npm v10.9.3)
+1:43:57 AM: Enabling Node.js Corepack
+1:43:57 AM: Started restoring cached build plugins
+1:43:57 AM: Finished restoring cached build plugins
+1:43:57 AM: Started restoring cached corepack dependencies
+1:43:57 AM: Finished restoring cached corepack dependencies
+1:43:57 AM: No npm workspaces detected
+1:43:57 AM: Started restoring cached node modules
+1:43:57 AM: Finished restoring cached node modules
+1:43:57 AM: Installing npm packages using npm version 10.9.3
+1:44:07 AM: added 471 packages in 10s
+1:44:07 AM: npm packages installed
+1:44:07 AM: Successfully installed dependencies
+1:44:07 AM: Starting build script
+1:44:08 AM: Detected 1 framework(s)
+1:44:08 AM: "next" at version "15.5.3"
+1:44:08 AM: Section completed: initializing
+1:44:09 AM: ​
+1:44:09 AM: Netlify Build                                                 
+1:44:09 AM: ────────────────────────────────────────────────────────────────
+1:44:09 AM: ​
+1:44:09 AM: ❯ Version
+1:44:09 AM:   @netlify/build 35.1.6
+1:44:09 AM: ​
+1:44:09 AM: ❯ Flags
+1:44:09 AM:   accountId: 681d20fff162b66c25ac4e4d
+1:44:09 AM:   baseRelDir: true
+1:44:09 AM:   buildId: 68cc9936f3851271467fd695
+1:44:09 AM:   deployId: 68cc9936f3851271467fd697
+1:44:10 AM: ​
+1:44:10 AM: ❯ Current directory
+1:44:10 AM:   /opt/build/repo
+1:44:10 AM: ​
+1:44:10 AM: ❯ Config file
+1:44:10 AM:   /opt/build/repo/netlify.toml
+1:44:10 AM: ​
+1:44:10 AM: ❯ Context
+1:44:10 AM:   production
+1:44:10 AM: ​
+1:44:10 AM: ❯ Using Next.js Runtime - v5.13.3
+1:44:11 AM: No Next.js cache to restore
+1:44:11 AM: ​
+1:44:11 AM: build.command from netlify.toml                               
+1:44:11 AM: ────────────────────────────────────────────────────────────────
+1:44:11 AM: ​
+1:44:11 AM: $ npm run build
+1:44:11 AM: > iman_key_nama_portfolio@0.1.0 build
+1:44:11 AM: > next build --turbopack
+1:44:12 AM: ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
+1:44:12 AM:    ▲ Next.js 15.5.3 (Turbopack)
+1:44:12 AM:    Linting and checking validity of types ...
+1:44:14 AM: 
+1:44:14 AM: Failed to compile.
+1:44:14 AM: ./pages/api/contact.ts
+1:44:14 AM: 23:17  Warning: 'data' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+1:44:14 AM: 37:21  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+1:44:14 AM: ./pages/articles/[slug].tsx
+1:44:14 AM: 25:54  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+1:44:14 AM: 77:39  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+1:44:14 AM: 84:11  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+1:44:14 AM: 110:11  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+1:44:14 AM: ./pages/contact.tsx
+1:44:14 AM: 34:25  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+1:44:14 AM: ./pages/experience/[slug].tsx
+1:44:14 AM: 24:55  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+1:44:14 AM: 70:45  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+1:44:14 AM: 76:21  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+1:44:14 AM: ./pages/projects/[slug].tsx
+1:44:14 AM: 15:19  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+1:44:14 AM: 24:56  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+1:44:14 AM: 72:45  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+1:44:14 AM: 78:21  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+1:44:14 AM: ./components/Card.tsx
+1:44:14 AM: 18:21  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+1:44:14 AM: ./components/ContactForm.tsx
+1:44:14 AM: 34:25  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+1:44:14 AM: ./lib/contentful.js
+1:44:14 AM: 1:20  Error: A `require()` style import is forbidden.  @typescript-eslint/no-require-imports
+1:44:14 AM: info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+1:44:14 AM: ​
+1:44:14 AM: "build.command" failed                                        
+1:44:14 AM: ────────────────────────────────────────────────────────────────
+1:44:14 AM: ​
+1:44:14 AM:   Error message
+1:44:14 AM:   Command failed with exit code 1: npm run build (https://ntl.fyi/exit-code-1)
+1:44:14 AM: ​
+1:44:14 AM:   Error location
+1:44:14 AM:   In build.command from netlify.toml:
+1:44:14 AM:   npm run build
+1:44:14 AM: ​
+1:44:14 AM:   Resolved config
+1:44:14 AM:   build:
+1:44:14 AM:     command: npm run build
+1:44:14 AM:     commandOrigin: config
+1:44:14 AM:     environment:
+1:44:14 AM:       - CONTACT_FORM_TO_EMAIL
+1:44:14 AM:       - CONTENTFUL_ACCESS_TOKEN
+1:44:14 AM:       - CONTENTFUL_SPACE_ID
+1:44:14 AM:       - RESEND_API_KEY
+1:44:14 AM:     publish: /opt/build/repo/.next
+1:44:14 AM:     publishOrigin: config
+1:44:14 AM:   plugins:
+1:44:14 AM:     - inputs: {}
+1:44:14 AM:       origin: config
+1:44:14 AM:       package: "@netlify/plugin-nextjs"
+1:44:15 AM: Failed during stage 'building site': Build script returned non-zero exit code: 2 (https://ntl.fyi/exit-code-2)
+1:44:15 AM: Build failed due to a user error: Build script returned non-zero exit code: 2
+1:44:15 AM: Failing build: Failed to build site
+1:44:15 AM: Finished processing build request in 21.773s

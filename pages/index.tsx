@@ -1,19 +1,19 @@
 import client from '../lib/contentful';
 import type { GetStaticProps, InferGetStaticPropsType } from 'next';
-import type { Entry, Asset } from 'contentful';
+import type { Entry, Asset, EntryFieldTypes, EntrySkeletonType } from 'contentful';
 import Card from '../components/Card';
 import ContactForm from '../components/ContactForm';
 import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 
 // Define the Contentful "skeleton" for an Article
-interface ArticleSkeleton {
+interface ArticleSkeleton extends EntrySkeletonType {
   contentTypeId: 'article';
   fields: {
-    title: string;
-    slug: string;
-    excerpt?: string;
-    tags?: string[];
+    title: EntryFieldTypes.Text;
+    slug: EntryFieldTypes.Text;
+    excerpt?: EntryFieldTypes.Text;
+    tags?: EntryFieldTypes.Array<EntryFieldTypes.Symbol>;
   };
 }
 
@@ -21,26 +21,21 @@ interface ArticleSkeleton {
 interface ExperienceSkeleton {
   contentTypeId: 'experience';
   fields: {
-    title: string;
-    slug: string;
+    title: EntryFieldTypes.Text;
+    slug: EntryFieldTypes.Text;
   };
 }
 
 // Define the Contentful "skeleton" for a Project
-interface ProjectSkeleton {
+interface ProjectSkeleton extends EntrySkeletonType {
   contentTypeId: 'project';
   fields: {
-    title: string;
-    slug: string;
-    thumbnail?: Asset; // For the project image
-    tags?: string[];
+    title: EntryFieldTypes.Text;
+    slug: EntryFieldTypes.Text;
+    thumbnail?: EntryFieldTypes.AssetLink;
+    tags?: EntryFieldTypes.Array<EntryFieldTypes.Symbol>;
   };
 }
-
-// We use the Entry type with our custom skeletons to correctly type the API response
-type IArticleEntry = Entry<ArticleSkeleton>;
-type IProjectEntry = Entry<ProjectSkeleton>;
-type IExperienceEntry = Entry<ExperienceSkeleton>;
 
 export const getStaticProps: GetStaticProps = async () => {
   const articlesResponse = await client.getEntries<ArticleSkeleton>({
@@ -60,9 +55,9 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return {
     props: {
-      articles: articlesResponse.items as IArticleEntry[],
-      projects: projectsResponse.items as IProjectEntry[],
-      experiences: experiencesResponse.items as IExperienceEntry[],
+      articles: articlesResponse.items,
+      projects: projectsResponse.items,
+      experiences: experiencesResponse.items,
     },
     revalidate: 60,
   };
