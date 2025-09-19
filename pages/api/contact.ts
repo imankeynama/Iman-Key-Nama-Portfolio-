@@ -7,7 +7,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(405).json({ message: 'Method Not Allowed' });
     }
 
-    if (!process.env.RESEND_API_KEY || !process.env.CONTACT_FORM_TO_EMAIL) {
+    if (!process.env.RESEND_API_KEY || !process.env.CONTACT_FORM_TO_EMAIL || !process.env.RESEND_FROM_EMAIL) {
         console.error('ERROR: Missing Resend environment variables. Please check your .env.local file and restart the server.');
         return res.status(500).json({ message: 'Server configuration error.' });
     }
@@ -21,7 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         const resend = new Resend(process.env.RESEND_API_KEY);
         const { error } = await resend.emails.send({
-            from: 'Portfolio Contact <onboarding@resend.dev>',
+            from: `Portfolio Contact <${process.env.RESEND_FROM_EMAIL}>`,
             to: [process.env.CONTACT_FORM_TO_EMAIL],
             subject: `New message from ${name}`,
             replyTo: email,
